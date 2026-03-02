@@ -1,0 +1,91 @@
+component 
+- saat belajar react, kita harus terbiasa dengan istilah component
+- component adalah kumplan kode yang bisa digunakan secara independen
+- component bisa berisikan satu atau lebih HTML element, kode javascript dan css
+- tidak ada aturan harus seberapa besar atau kecil sebuah component
+- anggap saja seperti membuat function, kita bisa membuat function yang besar atau kecil, karena tujuan function adalah agar bisa digunakan secara berulang-ulang, begitu juga tujuan dari component
+- struktur component mirip seperti DOM (document object model), dimana kita bisa membuat component di dalam component lain
+
+jsx
+- react menggunakan JSX ketika membuat component
+- jsx (javascript XML atau javascript syntax extension), adalah kombinasi javascript dan XML (HTML), dimana kita bisa membuat component dengan mudah menggunakan kode XML, dan javascript dalam satu file
+- JSX diperkenalkan oleh Facebook di react, namun saat ini JSX sudah banyak di adopsi oleh banyak framework javscript lainnya
+
+membuat project
+- untuk membuat project react, kita akan menggunakan vite sebagai build toolnya
+- kita bisa membuat project react menggunakan beberapa perintah
+- untuk membuat project react menggunakan javscript :
+npm create vite@latest nama-aplikasi -- --template react
+- untuk membuat project react menggunaakn type script :
+npm create vite@latest nama-aplikasi -- --template react-ts
+- setelah membuat project baru, jalankan perintah : npm install
+- kemudian jalankan project dengan perintah : npm run dev (dijalankan oleh vite)
+
+membuat component 
+- biasanya component akan dibuat dalam satu file JSX dengan nama sesuai dengan nama komponen nya
+- misal kita akan membuat component bernama HelloWorld, maka kita bisa membuat file komponen HelloWorld.jsx
+- selanjutnya, kita perlu membuat default function dengan nama component nya, yaitu HelloWorld
+- return dari function tersebut adalah element UI yang akan ditampilkan
+- satu component atau function JSX hanya bisa mereturn 1 element, contoh div atau fragment,
+yang mana dalam satu div terdapat komponen lainnya seperti h1, p, dan lain lain
+
+menampilkan component
+- untuk menampilkan component, diperlukan instance dari react root
+- kita bisa membuat react root menggunakan method createRoot(element)
+- referensi : https://react.dev/reference/react-dom/client/createRoot
+- selanjutnya untuk menampilkan component di react root, kita bisa gunakan method render(component)
+- untuk membantu mencari masalah saat development, react menyediakan component StrictMode, kita bisa menggunakannya untuk menampilkan komponen di root
+- referensi strict mode : https://react.dev/reference/react/StrictMode
+
+sifat vite 
+- saat menjalankan build dengan vite, maka vite hanya mengcompile 1 file yaitu index.html
+- jika kita ingin menambahkan lebih dari satu halaman yang di compile kita bisa ubah konfigurasi vite pada file vite.config.js dan menambahkan rollupOptions (seperti yang sudah diubah di file config vite)
+- untuk menjalankan build, bisa mengunakan perintah : npm run build (output nya di folder dist)
+
+react component
+- react component mendukung semua elemen HTML dan SVG
+- jadi kita tidak perlu khawatir ketika membuat component, karena semua elemen pasti didukung
+- referensi : https://react.dev/reference/react-dom/components
+
+mutiple component
+- sebelumnya kita membuat satu file JSX untuk satu component
+- walaupun itu adalah praktek yang baik, tapi bukan berarti itu wajib dilakukan
+- karena component sebenarnya hanyalah sebuah function yang mengembalikan react element, oleh karena itu jika kita ingin membuat component, kita hanya cukup membuat function yang mengembalikan react element
+
+kenapa JSX
+- web dibuat menggunakan HTML, CSS dan Javascript. Biasanya kita akan menyimpan konten di HTML, desain di CSS, dan logika aplikasi di javascript. Dan biasanya kita akan simpan di file-file yang terpisah
+- tapi saat ini, web sudah lebih interaktif, seringnya konten HTML ditampilkan berdasarkan logika aplikasi di javascript
+- oleh karena itu, react melakukan logika aplikasi dan membuat konten di satu tempat yang sama, JSX
+
+mengubah HTMl ke JSX
+- saat mengubah kode HTMl ke JSX, kita tidak bisa lakukan semudah copy paste kode nya dari HTMl ke JSX
+- JSX memiliki aturan yang lebih ketat dibanding HTML, contohnya saat menggunakan tag element, wajib menggunakan tag tutup
+- misal kita tidak bisa menggunakan tag :
+<img src="">
+- sehingga kita harus tutup tag nya ketika menggunakan JSX :
+<img src="" />
+- beberapa attribute di tag element pun berbeda ketika menggunakan JSX
+
+aturan JSX
+- wajib menutup semua tag element
+- component hanya boleh mengembalikan satu element, jika kita ingin mengembalikan beberapa element, kita harus bungkus dalam parent element
+- attribute menggunakan penulisan 'camelCase'. Attribute di element JSX akan dikonversi ke variabel javscript, oleh karena itu nama attribute harus mengikuti cara pembuatan nama variabel di javascript, yaitu tidak bisa menggunakan strip '-'. Oleh karena itu, kebanyakan attribute di element JSX, akan menggunakan camelCase, contoh className (bukan class-name)
+
+jsx converter
+- jika misalnya kita sudah punya kode HTML, dan ingin mengkonversi ke JSX
+- disarankan menggunakan converter sehingga kita tidak perlu lakukan secara manual lagi
+- referensi : https://transform.tools/html-to-jsx
+
+javascript di JSX
+- kadang kadang, terdapat kasus dimana kita ingin mengakses kode javascript di JSX
+- pada kasus ini, kita bisa menggunakan kurung kurawal untuk mengakses kode javascript di JSX
+
+kurung kurawal di JSX
+- penggunaan kurung kurawal di JSX hanya bisa dilakukan pada dua lokasi
+- 1. sebagai teks, seperti pada contoh sebelumnya
+- 2. sebagai nilai attribute pada tag element, misal : <img src={location}>
+
+kurung kurawal double pada JSX
+- pada beberapa attribute, contohnya style. kita bisa menggunakan javascript object sebagai parameter
+- oleh karena itu, kadang sekilas terlihat seperti kurung kurawal double, padahal sebenarnya hanya satu kurung kurawal, dan datanya dalah javascript object
+
