@@ -1,3 +1,6 @@
+// import css dari file lain
+import './HelloWorld.css';
+
 // membuat function HelloWorld
 function HelloWorld() {
   // menambahkan element pada komponen HelloWorld
@@ -20,7 +23,8 @@ function HeaderHelloWorld() {
   // untuk mengeksekusi kode javascript di JSX, kita perlu menambahkan kurung kurawal '{ }'
   const text = "Hello World";
   return (
-    <h1
+    <h1 className='title'
+    /** (dimatikan karena css menggunakan import diatas)
       style={
         // membuat objek untuk mengisikan parameter pada style
         // dengan menggunakan metode inline
@@ -29,6 +33,7 @@ function HeaderHelloWorld() {
           backgroundColor: "green",
         }
       }
+      */
     >
       {text.toUpperCase()}
     </h1>
@@ -38,14 +43,19 @@ function HeaderHelloWorld() {
 function ParagraphHelloWorld() {
   let text = "Hello World";
 
+  /** (dimatikan karena css menggunakan import diatas)
   // membuat objek untuk mengisikan parameter pada style
   // dengan cara variabel
   const style = {
     color: "aqua",
     backgroundColor: "purple",
   };
+   */
 
-  return <p style={style}>{text.toLowerCase()}</p>;
+  // (dimatikan karena css menggunakan import diatas)
+  // return <p style={style}>{text.toLowerCase()}</p>;
+  
+  return <p className='content'>{text.toLowerCase()}</p>;
 }
 
 export default HelloWorld;

@@ -89,3 +89,59 @@ kurung kurawal double pada JSX
 - pada beberapa attribute, contohnya style. kita bisa menggunakan javascript object sebagai parameter
 - oleh karena itu, kadang sekilas terlihat seperti kurung kurawal double, padahal sebenarnya hanya satu kurung kurawal, dan datanya dalah javascript object
 
+style 
+- css sendiri bukan bagian dari JSX, jika kita ingin membuat style CSS, maka kita perlu buat dalam file CSS, atau langsung di attribute style menggunakan kurung kurawal double 
+- menggunakan style pada JSX, tidak menggunakan attribute class, melainkan className
+- referensi : https://react.dev/reference/react-dom/components/common#applying-css-styles
+
+conditional 
+- saat kita membuat halaman web, sering kali kita menampilkan tampilan berbeda pada kondisi tertentu
+- hal ini juga bisa dilakukan di JSX
+- kita bisa menambahkan kondisi di javascript, dan mengembalikan component yang berbeda berdasarkan kondisi yang diinginkan 
+- contoh pada halaman todolist, dan jika todo nya sudah selesai, maka kita akan coret element teks nya
+
+null component
+- pada kasus tertentu, mungkin ada kondisi dimana kita ingin mengembalikan Component, atau tidak ingin mengembalikan Component apapun
+- kita bisa mengembalikan null untuk menandai bahwa tidak ada Component yang akan kita kembalikan
+
+ternary operator 
+- kadang pada kasus yang lebih sederhana, kita bisa menggunakan ternary operator javascript di JSX
+
+logical AND 
+- dibeberapa kasus yang lebih sederhana, kadang di JSX sering memanfaatkan logical AND di javascript
+- misal jika kondisi terpenuhi maka akan menampilkan, jika tidak maka tidak ditampilkan
+
+collection component
+- kita pasti akan sering menampilkan component yang sama berkali-kali sesuai koleksi data. JSX tidak memiliki fitur perulangan
+- untuk menampilkan multiple component, sama seperti conditional, kita akan memanfaatkan javascript
+- kita bisa menggunakan javascript array untuk mengubah data array menjadi component, misal menggunakan method map() pada array
+- misal sekarang kita akan coba ubah data Todolist yang sebelumnya dibuat menjadi array
+
+component key 
+- jika kita perhatikan di text editor (console browser), mungkin kita akan melihat pesan peringatan "Missing key prop for element in iterator"
+- saat membuat collection component, tiap component diperlukan id (unique, string atau number) menggunakan attribute key
+- hal ini perlu dilakukan agar react bisa mengenali component ketika berubah, seperti posisinya diubah, dihapus atau ditambahkan pada collection
+- biasanya, component key akan diambil dari data, sehingga lebih konsisten
+
+pure function
+- dalam pemrograman, kita mengenal yang namanya pure function
+- referensi : https://en.wikipedia.org/wiki/Pure_function
+- sebuah function bisa disebut sebagai pure function jika memenuhi 2 kriteria berikut :
+1. function akan mengembalikan nilai yang sama untuk nilai parameter yang sama
+2. function tidak memiliki efek samping, tidak ada perubahan pada variabel non local (variabel yang berada diluar function)
+
+pure component
+- react mengasumsikan bahwa setiap component yang kita buat adalah pure function
+- berarti react component yang kita buat harus selalu mengembalikan JSX yang sama dengan input yang sama
+- walaupun sebenarnya kita bisa saja membuat react component yang tidak pure, tapi sangat tidak disarankan, karena setiap memanggil komponen dengan input sama, bisa menghasilkan nilai yang tidak konsisten
+- kita akan coba membuat contoh react component yang tidak pure
+
+membuat pure component
+- lantas bagaimana cara component row dan table mejadi pure component
+- kita harus menghapus efek samping dari component, contohnya kita bisa pindahkan variabel counter (variabel global) enjadi local variabel di Table, dan gunakan props sebagai counternya
+
+dimana kita bisa melakukan efek samping (selain dari pure function)
+- react menyediakan tempat khusus jika kita ingin membuat component yang bisa menghasilkan efek samping
+- efek samping dari component biasanya ditempatkan di event handler, yaitu aksi yang terjadi ketika kita berinteraksi dengan component
+- atau ketika misal component tergantung dengan external system (misal API), maka react akan menyediakan function useEffect()
+- referensi : https://react.dev/reference/react/useEffect
