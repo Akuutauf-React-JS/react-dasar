@@ -145,3 +145,56 @@ dimana kita bisa melakukan efek samping (selain dari pure function)
 - efek samping dari component biasanya ditempatkan di event handler, yaitu aksi yang terjadi ketika kita berinteraksi dengan component
 - atau ketika misal component tergantung dengan external system (misal API), maka react akan menyediakan function useEffect()
 - referensi : https://react.dev/reference/react/useEffect
+
+event handler
+- pada html element, kita bisa menambahkan event handler
+- sama juga dengan react component, kita bisa menambahkan event handler pada element di react component
+- ada banyak sekali jenis event handler yang bisa kita tambahkan, kita bisa lihat di halaman referensi react component 
+- referensi : https://react.dev/reference/react-dom/components/common
+
+menambahkan event handler
+- untuk menambahkan event handler, biasanya kita akan tambahkan function sebagai handler nya
+- bisa dalam bentuk anonymous function, arrow function atau membuat function terlebih dahulu di dalam scope componentnya
+- nama function untuk handler biasanya diawali dengan nama 'handle' dan diikuti dengan jenis event handler, misal 'handleClick()', 'handleMouseEnter()', dan lain lain
+
+membaca props di event handler
+- salah satu keuntungan membuat function event handler di dalam component adalah, kita bisa membaca props yang digunakan oleh component tersebut
+
+event handler sebagai props
+- props adalah javascript object
+- kita tahu bahwa javascript object bisa memiliki attribute dengan tipe function
+- oleh karena itu, kita bisa membuat event handler di props
+- saat membuat attribute di props yang berisikan event handler, biasanya nama attributenya diawali dengan 'on', misalnya 'onSmash', 'onHit' dan lain lain
+
+event object
+- saat kita membuat event handler function, kita bisa menambahkan event object sebagai parameter di function tersebut
+- react event object kompatible dengan standard DOM event object
+- referensi : https://react.dev/reference/react-dom/components/common#react-event-object
+- referensi : https://developer.mozilla.org/en-US/docs/Web/API/Event
+
+event propagation
+- event di react component akan selalu disebarkan di component yang ada diatasnya (event propagation)
+- misalnya kita memiliki div dengan event onClick, lalu didalam div terdapat button dengan event onClick
+- ketika button di klik, maka onClick di button akan dipicu dan selanjutnya onClick di Div juga akan dipicu
+- kadang mungkin kita tidak ingin hal itu terjadi, maka kita bisa hentikan proses event propagation tersebut menggunakan method 'stopPropagation()'
+- referensi : https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation
+
+prevent default
+- selain menghentikan propagation, hal yang biasa kita lakukan ketika membuat event handler adalah menghentikan default action menggunakan 'preventDefault()'
+- referensi : https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
+- misalnya ketika kita membuat form, ketika dipicu event onClick, kita ingin hentikan default action form submit
+
+side effect 
+- apakah component boleh memiliki side effect?
+- tentu saja boleh, namun biasanya side effect terjadi dikarenakan adanya interaksi dari pengguna melalui event handler
+- misalnya, ketika kita akan membuat form Say Hello, dimana ketika button diklik, kita ingin menampilkan "Hello + nama" pada text
+
+DOM manipulation
+- kode sebelumnya, kita menggunakan DOM manipulation untuk mengubah komponen di react
+- hal ini sebenarnya tidak terlalu direkomendasikan, terutama jika misal data yang memicu perubahan element di component bersumber dari berbagai event handler
+- oleh karena itu, hal yang direkomendasikan adalah menggunakan state
+
+hooks 
+- hooks adalah fitur di react yang bisa digunakan di component
+- ada banyak sekali fitur yang bisa kita gunakan di react hooks
+- referensi : https://react.dev/reference/react/hooks
