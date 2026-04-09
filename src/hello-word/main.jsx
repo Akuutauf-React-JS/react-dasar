@@ -9,6 +9,7 @@ import MyButton from "../button/MyButton";
 import Toolbar from "../button/Toolbar";
 import SearchForm from "../form/SearchForm";
 import SayHelloForm from "../form/SayHelloForm";
+import Counter from "../form/Counter";
 
 // implementasi create root
 // create root membutuh kan 2 parameter, yaitu component dan option (sifatnya opsional)
@@ -48,6 +49,13 @@ createRoot(document.getElementById("root")).render(
 
       {/* implementasi say hello form */}
       <SayHelloForm></SayHelloForm>
+
+      {/* implementasi counter */}
+      <Counter></Counter>
+
+      {/* implementasi state counter yang terisolasi, artinya hanya berpengaruh ke komponen nya masing-masing */}
+      {/* state di counter 2 tidak akan berpengaruh ke state pertama, begitu juga sebaliknya */}
+      <Counter />
     </Container>
   </StrictMode>,
 );

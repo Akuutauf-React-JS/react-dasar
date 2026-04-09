@@ -198,3 +198,110 @@ hooks
 - hooks adalah fitur di react yang bisa digunakan di component
 - ada banyak sekali fitur yang bisa kita gunakan di react hooks
 - referensi : https://react.dev/reference/react/hooks
+
+state 
+- component kadang perlu untuk berubah dikarenakan interaksi yang dilakukan pengguna
+- misalnya, input diklik bisa menaikkan data counter. tombol next bisa mengubah gambar banner yang sedang muncul, dan lain lain
+- component harus bisa mengingat nilai saat ini, seperti counter saat ini, gambar saat ini, dan lain lain
+- di react, memori spesifik di component disebut State
+
+state menggunakan local variabel biasa
+- local variabel biasa di component tidak bisa dilakukan untuk state
+- ketika react melakukan render (menampilkan) component untuk yang kedua kali dan seterusnya, maka semua code komponen akan dieksekusi ulang, oleh karena itu local variabel akan kembali ke nilai awal
+- perubahan di local varibel juga, tidak akan memicu render ulang component
+
+useState
+- untuk membuat state, kita bisa menggunakan function useState(initial)
+- referensi : https://react.dev/reference/react/useState
+- function useState akan mengembalikan array dengan 2 nilai, pertama adalah state nya, dan kedua adalah function untuk mengubah value di state tersebut
+- component yang menggunakan state tersebut, secara otomatis akan dirender
+
+state terisolasi dan private
+- state merupakan data yang terisolasi dan private secara local terhadap component yang menggunakan 
+- artinya, jika me-render component yang sama berkali-kali, maka state dari tiap component tersebut akan terpisah satu sama lain
+
+render
+- sebelum komponen yang kita buat ditampilkan di layar, component harus di render oleh react
+- oleh karena itu, kita perlu tahu bagaimana cara kerja proses react ini ketika menapilkan komponenn yang kita buat
+- terdapat 3 tahapan proses menampilkan komponen di react :
+1. pertama, trigger (memicu) proses render
+2. kedua, melakukan proses render component
+3. ketiga, menempatkan hasil render component ke DOM (Document Object Model)
+
+trigger render
+- pemicu render biasanya terjadi karena dua hal :
+1. pertama adalah inisiasi awal component, yang kita lakukan menggunakan method render()
+2. kedua adalah ketika pemicu perubahan state
+- setiap terjadi perubahan state, secara otomatis react mengirimkan antrian untuk memicu proses render ulang
+
+render component
+- setelah proses trigger render terjadi, react akan memanggil component yang kita buat untuk mencari tahu apa yang harus ditampilkan di layar
+- rendering adalah proses react memanggil component yang kita buat
+- pada proses inisialisasi awal, react akan memanggil root component (paling atas)
+- pada saat proses render ulang, react hanya akan memanggil ulang component yang state nya berubah
+- setelah proses render selesai, react akan melakukan proses commit
+- ketika membuka tampilan hello world, maka akan merender seluruh komponent root (awal), kemudian jika ada komponen yang berubah state nya (counter pertama), maka react akan me render komponen milik counter tersebut saja
+
+commit changes
+- setelah proses render selesai, react akan melakukan proses commit changes (menyimpan perubahan) ke DOM
+- untuk inisialisasi awal, karena baru pertama kali, artinya element di DOM beluma ada, maka react akan menggunakan appendChild() untuk menambahkan element ke DOM
+- sedangkan untuk proses render ulang, react akan mencoba melakukan perubahan seminimal mungkin untuk menyamakan DOM saat ini dengan hasil rendering
+- react hanya akan mengubah element di DOM, jika memang element tersebut berbeda dari hasil rendering
+
+snapshot
+- variabel state sekilas mungkin terlihat seperti variabel javascript biasa
+- tapi sebenarnya, state itu mirip seperti snapshot (kondisi saat itu). mengubah nilai variabel state tidak akan mengubah snapshot, melainkan akan memicu render ulang untuk membuat snapshot baru
+- kita mungkin berpikir bahwa tampilan web, berubah secara langsung karena response dari event yang dilakukan oleh pengguna, seperti klik tombol 
+- namun sebenarnya tidak seperti itu. ketika terjadi perubahan di state, itu akan memicu render ulang, sehingga akan membuat snapshot baru yang ditampilkan dilayar
+
+kesalahan mengubah state
+- paham tentang snapshot ini, akan memberikan gambaran cara pandang kita terhadap data di state
+- berikut adalah contoh kesalahan yang bias dilakukan ketika mengubah state
+- kita berpikir jika mengubah state, saat itu juga data akan berubah, padahal mengubah state sebenarnya hanyalah mentrigger render ulang dengan nilai state yang baru
+
+kenapa counter tidak berubah 3x?
+- hal ini dikarenakan, setCounter() tidak akan mengubah data counter yang ada di snapshot saat ini
+- setCounter() hanya akan melakukan render ulang dengan data dengan data counter yang baru
+- saat kita memanggil setCounter() sebanyak 3x, bukan berarti react akan melakukan render ulang sebanyak 3x. React akan menunggu event handler selesai, jika ada perubahan state maka akan dilakukan render ulang
+- artinya render ulang akan dilakukan sekali saja, walaupun kita mengubah state berkali-kali
+
+state updates
+- melakukan update state berkali-kali, tidak akan mengubah data state di snapshot saat itu, melainkan hanya memicu untuk render ulang dengan data state baru
+- tapi kadang-kadang, kita memang mungkin ada keperluan untuk mengubah data di state yang sama berkali-kali
+- dan jika kita memang ingin mengubah data di state dengan data yang harapannya diubah sebelumnya (walaupun belum di render ulang)
+- kita bisa menggunakan 'lambda' sebagai parameter ketika memanggil function untuk update data state
+
+object di state
+- state bisa menyimpan jenis data javascript apapun, termasuk object
+- tapi kita tidak disarankan untuk mengubah object yang terdapat di state
+- jika kita ingin mengubah object di state, kita disarankan membuat object baru lalu mengubah data di state tersebut dengan object baru
+- kalau kita mencoba untuk mengubah object di state saat ini, maka tidak akan mentrigger render ulang
+
+immutable data
+- saat kita membuat data di state, kita harus memperlakukan data di state sebagai immutable data (tidak bisa berubah)
+- artinya data di state hanya digunakan untuk dibaca (read only)
+- jika kita ingin mengubah data di state, maka kita harus ubah menggunakan data baru, yang artinya data lama tidak dimodifikasi
+- ini adalah praktek yang biasa dilakukan di react. walaupun pada kenyataannya object di javscript tidak immutable
+- hal ini direkomendasikan agar kita tidak salah mengubah data langsung, padahal kita tahu bahwa mengubah data tidak akan memicu proses render ulang
+- untung nya di javascript kita bisa menggunakan spread syntax untuk membantu mengcopy attribute di object
+
+nested object
+- kadang ada kasus kita menggunakan nested object
+- sama seperti sebelumnya, kita disarankan untuk selalu membuat object baru ketika mengubah state
+- kadang memang menyulitkan ketika nested object nya terlalu besar, oleh karena itu disarankan tidak terlalu dalam membuat nested object nya
+
+immer library 
+- salah satu library yang sering digunakan ketika develop aplikasi menggunakan react adalah immer
+- immer adalah library yang digunakan untuk membuat immutable object dari object saat ini
+- mengunakan immer akan lebih mudah dibandingkan menggunakan spread syntax, terutama untuk object yang kompleks dan nested
+- referensi : https://github.com/immerjs/immer
+
+use immer library
+- library immer juga bisa diintegrasikan dengan react state dengan mudah
+- kita bisa menggunakan library Use-Immer
+- referensi : https://github.com/immerjs/use-immer
+- kita cukup mengganti 'useState()' menjadi 'useImmer()'
+- dan untuk mengupdate object di state, kita bisa menggunakan function sebagai parameter di Update method nya
+
+menambah libary immer
+- npm install immer use-immer
