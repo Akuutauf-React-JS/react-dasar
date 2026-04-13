@@ -305,3 +305,63 @@ use immer library
 
 menambah libary immer
 - npm install immer use-immer
+
+array di state
+- sama seperti object, array di state juga harus kita perlakukan sebagai immutable data
+- artinya operasi menambah data, mengubah atau menghapus data di array, kita harus membuat array baru untuk di update ke state
+- hal ini memang agak menyulitkan, namun dengan bantuan library immer, hal ini jadi lebih sederhana
+
+sharing state
+- kadang, kita ingin membuat state untuk beberapa component yang selalu berubah bersama-sama, atau sederhananya adalah sharing (berbagi) state
+- untuk melakukan ini, kita harus mengubah lokasi state dari component-component itu, ke parent component mereka, lalu kirim state nya melalui props
+- misal, pada form task sebelumnya, kita akan buat 2 child component, component untuk task form nya, dan componen untuk task list nya
+- kita akan share state nya dari task ke TaskForm dan TaskList melalui props
+
+mempertahankan state
+- state terisolasi antar component, react melacak state mana yang dimiliki oleh component berdasarkan tempatnya di struktur UI
+- kita bisa mengatur, kapan kita ingin mempertahankan state, kapan kita akan mereset state
+- state sendiri tidak di simpan ke dalam component. State itu di simpan di react, sedangkan ketika kita menggunakan state di component, maka sebenarnya kita akan menggunakan state yang ada di React
+- cara react bisa tahu state mana yang digunakan oleh component adalah, melihat posisi component di struktur UI
+
+posisi component
+- react menyimpan state sesuai dengan posisi component
+- ketika posisi component berubah, misal hilang dari tampilan layar
+- secara otomatis state dari component tersebut akan dihapus dari react
+- misal, kita akan membuat Component Counter bisa dihilangkan
+- ketika component tersebut dihilangkan dari tampilan, maka secara otomatis state nya juga akan hilang
+
+component sama, di posisi sama
+- jika terdapat kasus kita menampilkan component yang sama
+- tapi secara struktur UI, dia berdasa di posisi yang sama
+- maka state akan dipertahankan oleh react, yang artinya tidak akan dihapus
+- hal ini mungkin akan membingungkan, tapi kita harus mengerti hal ini, karena react akan menyimpan informasi state mengikuti posisi component, jika componentnya sama, dan posisinya sama, maka state akan dipertahankan
+
+kenapa state nya masih sama
+- hal ini terjadi karena secara struktur UI, posisi component ada di posisi yang sama
+- jika posisi Component dan jenis Component nya sama, maka secara otomatis react akan mempertahankan state
+- kecuali posisinya berubah atau component nya berbeda, maka react akan menghapus state nya
+
+reset state
+- bagaimana jika pada kondisi tertentu, kita memang ingin melakukan reset state, tidak mau mempertahankan state nya?
+- ada beberapa cara untuk melakukan reset state
+- salah satunya yaitu kita bisa menghapus component dari tampilan UI
+- ketika componentnya hilang dari tampilkan UI, secara otomatis state akan ikut hilang
+
+cara lain : mengubah dengan component lain
+- selain menghapus component, kita juga bisa mengubah Component dengan Component lain di posisi yang sama
+- ketika posisi yang sama masih ada di struktur UI, tapi componentnya berbeda, secara otomatis state nya juga akan di reset
+- misalnya, sebelumnya kita menampilkan component counter, lalu kita ubah menjadi element paragraph. Secara otomatis state di component counter akan dihapus
+
+cara lain : mengubah posisi component
+- karena react akan menyimpan state sesuai dengan component dan posisinya
+- artinya jika posisi component diubah atau di pindahkan, secara otomatis state juga akan di reset
+
+cara lain : posisi component berbeda
+- selain mengubah posisi, kita juga bisa jika component sama berada di posisi yang berbeda, secara otomatis state nya juga akan berbeda
+- ini mungkin akan membingungkan, karena secara DOM mungkin posisinya sama, tapi secara posisi di component berbeda
+
+cara lain (direkomendasikan) : menggunakan key
+- cara yang umum biasanya digunakan untuk mereset state, yaitu menambahkan key pada component
+- saat component yang sama ditampilkan di posisi yang sama, jika key nya berbeda, maka akan dianggap component yang berbeda. Dengan demikian, secara otomatis state akan di reset
+- ini mungkin cara yang paling direkomendasikan, dibandingkan harus mengubah-ubah posisi komponen
+
