@@ -365,3 +365,27 @@ cara lain (direkomendasikan) : menggunakan key
 - saat component yang sama ditampilkan di posisi yang sama, jika key nya berbeda, maka akan dianggap component yang berbeda. Dengan demikian, secara otomatis state akan di reset
 - ini mungkin cara yang paling direkomendasikan, dibandingkan harus mengubah-ubah posisi komponen
 
+hook state reducer
+- react memiliki fitur hook state lain, yaitu reducer, dengan menggunakan 'useReducer()'
+- referensi : https://react.dev/reference/react/useReducer
+
+reducer
+- pada kasus kita membuat component yang memiliki banyak proses update State, kadang menyulitkan untuk maintain-nya, karena terlalu banyak event handler yang harus dibuat juga untuk mengubah data state nya
+- pada kasus seperti ini, kita bisa mengkonsolidasi semua logic untuk update state di sebuah function diluar component, atau kita sebut sebagai Reducer
+- kita akan coba membuat component dengan state yang banyak di update tanpa menggunakan reducer terlebih dahulu, nanti kita akan ubah menjadi menggunakan reducer
+
+menggunakan reducer
+- implementasi akan diterapkan pada NoteApp (masih mengunakan cara manual)
+- kita bisa lihat terdapat 3 aksi untuk update notes, ada add, update, dan delete. Dan itu semua disimpan didalam function yang berbeda-beda dan dari event handler yang berbeda-beda
+- menggunaakn reducer agak sedikit berbeda dengan mengubah state secara langsung. alih-alih memberi tahu ke react apa yang harus dilakukan dengan mengubah state, namun dengan menggunakan reducer kita perlu memberi tahu react apa yang sudah dilakukan oleh pengguna (action)
+- sehingga implementasi logic dari action nya dilakukan di tempat yang terpisah
+
+membuat reducer function
+- reducer function adalah kode dimana kita menyimpan logic kita
+- reducer function memiliki dua parameter, state saat ini, dan action object
+- return function nya adalah state selanjutnya
+
+menggunakan immer
+- library useImmer juga mendukung reducer, sehingga kita bisa lebih mudah karena kita bisa mengedit data draft dibanding membuat data baru dari state yang ada
+- kita bisa menggunakan method 'useImmerReducer()'
+
