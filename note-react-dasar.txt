@@ -389,3 +389,60 @@ menggunakan immer
 - library useImmer juga mendukung reducer, sehingga kita bisa lebih mudah karena kita bisa mengedit data draft dibanding membuat data baru dari state yang ada
 - kita bisa menggunakan method 'useImmerReducer()'
 
+context hooks 
+- selain state hooks, yang menggunakan useState() dan useReducer()
+- masih ada hooks yang lainnya, salah satunya adalah context hooks yang menggunakan useContext()
+- referensi : https://react.dev/reference/react/useContext
+
+context
+- biasanya, digunakan untuk mengirim informasi dari parent component ke child component, kita bisa menggunakan props
+- tapi mengirim informasi melalui banyak component, mungkin akan membuat kita terlalu sulit melakukan maintain props nya
+- atau, misal saja kita punya satu informasi yang digunakan oleh banyak component, maka mengirim ke semua component juga akan terlalu sulit
+- context membolehkan parent component membuat informasi dan bisa digunakan oleh component manapun dibawah nya (child component), tidak peduli seberapa dalam component di dalamnya
+- banyak juga yang bilang jika contect adalah global state
+
+membuat context
+- untuk membuat context, kita bisa menggunakan function createContext()
+- referensi : https://react.dev/reference/react/createContext
+- selanjutnya, setelah membuat context, untuk menggunakan context tersebut, kita bisa menggunakan useContext()
+- referensi : https://react.dev/reference/react/useContext
+- untuk mengubah data di context, kita bisa gunakan provider yang terdapat di context. secara otomatis semua component dibawahnya akan mendapat nilai yang sesuai yang kita ubah di context provider
+- referensi : https://react.dev/reference/react/createContext#provider
+
+context dan state
+- untuk mengubah context, kita harus menggunakan provider
+- hal ini karena context itu hanya bisa diakses oleh component dibawahnya, tidak bisa component diatasnya atau yang sejajar
+- selain itu, component dibawahnya hanya bisa membaca data dari context, tidak bisa mengubah data di context
+- oleh karena itu, jika kita ingin membuat data di context bisa diubah dengan mudah, kita bisa menggunakan bantuan state (yang boleh merubah data context, adalah parent)
+
+sebelum menggunakan context
+- context mungkin lebih mudah digunakan dibanding mengirim semua data state via props
+- tapi jangan terlalu sering menggunakan context sampai ke hal yang sederhana
+- gunakan context jika memang perlu, jika masih sederhana, bisa gunakan state dan props dulu, jika sudah terlalu kompleks dan terlalu dalam mengirim props nya, baru bisa diubah ke context
+
+context dan reducer
+- sama seperti state, reducer juga kita bisa integrasikan dengan context
+- pada kasus ketika kita membuat component yang sudah kompleks, dan menggunakan reducer, kita bisa mengirim semua state dan reducer menggunakan context ke child component
+- sehingga lebih mudah dibanding menggunakan props
+- misal kita coba modifikasi halaman notes yang sebelumnya sudah kita buat
+
+pindahkan event handler
+- karena method Dispatch() ada di context, jadi kita tidak perlu mengirim event handler lagi dari parent component ke child component melalui props
+- kita bisa langsung pindahkan ke child component, karena child component bisa mengakses Dispatch function
+
+ref hooks
+- fitur hooks yang lain selain state dan context, adalah ref hooks
+- ketika kita ingin component mengingat informasi, tapi tidak mau memicu render ulang, maka kita bisa gunakan ref (sama seperti state, namun tidak memicu render ulang)
+- menggunakan ref hooks bisa dengan method useRef()
+- referensi : https://react.dev/reference/react/useRef
+- function useRef() akan mengembalikan object yang memiliki attribute current, dimana attribute current berisi value yang dipegang oleh ref
+- perbedaan ref dan state :
+
+|   Ref                                                         | State
+------------------------------------------------------------------------------------------------------------------------------
+| 1. useRef(initial mengembalikan object {current.initial})     | 1. useState(initial mengembalikan [value, setValue])
+| 2. tidak memicu render ulang ketika diubah                    | 2. memicu render ulang ketika diubah 
+| 3. mutable, bisa dimodifikasi dan diubah current value nya    | 3. immutable, kita hanya bisa mengubah menggunakan function setValue
+| 4. tidak direkomendasikan untuk membaca dan menulis curent    | 4. bisa dibaca kapanpun, tapi tiap render akan memiliki snapshot masing-masing
+| value ketika proses rendering. lebih cocok dibaca atau diubah | 
+| pada event handler                                            | 

@@ -3,6 +3,8 @@
 import { useImmerReducer } from "use-immer";
 import NoteForm from "../note/NoteForm";
 import NoteList from "../note/NoteList";
+import { NotesDispatchContext } from "./NoteContext";
+import { NotesContext } from "./NoteContext";
 
 // menyiapkan daftar notes secara manual (sebagai contoh)
 let id = 0; // untuk key dari data notes
@@ -105,47 +107,100 @@ function notesReducer(draft, action) {
 }
 
 // function component NoteApp setelah mengunakan reducer
+// namun masih belum menerapkan context
+// export default function NoteApp() {
+//   // kita menggunakan useReducer, tidak lagi menggunakan useImmer, maupun useState
+//   // useReducer memiliki 2 parameter, function reducer, dan data awal (initialNotes)
+
+//   // menyiapkan variabel yang dibutuhkan
+//   // dispatch digunakan sebagai pengganti operasi, yang menghubungkan component ke function reducer
+//   // const [notes, dispatch] = useReducer(notesReducer, initialNotes); // jikalau ingin menggunakan reducer pure
+//   const [notes, dispatch] = useImmerReducer(notesReducer, initialNotes); // jikalau ingin menggunakan reducer dengan immer
+
+//   // membuat event handler yang digunakan untuk mengirimkan expression ke function reducer
+//   function handleAddNote(text) {
+//     dispatch({
+//       // dispatch digunakan sebagai pengganti
+//       type: "ADD_NOTE",
+//       text: text,
+//     });
+//   }
+
+//   function handleChangeNote(note) {
+//     dispatch({
+//       ...note, // bisa juga menggunakan spread syntax
+//       type: "CHANGE_NOTE",
+//     });
+//   }
+
+//   function handleDeleteNote(note) {
+//     dispatch({
+//       type: "DELETE_NOTE",
+//       id: note.id,
+//     });
+//   }
+
+//   return (
+//     <div>
+//       <h1>Note App</h1>
+
+//       {/* akan membuka menu / tampilan menambahkan note baru */}
+//       <NoteForm onAddNote={handleAddNote}></NoteForm>
+
+//       {/* menampilkan list, dan aksi yang bisa dilakukan (edit/hapus) */}
+//       <NoteList notes={notes} onChange={handleChangeNote} onDelete={handleDeleteNote}></NoteList>
+//     </div>
+//   );
+// }
+
+// function component NoteApp setelah mengunakan reducer dan context
 export default function NoteApp() {
-  // kita menggunakan useReducer, tidak lagi menggunakan useImmer, maupun useState
-  // useReducer memiliki 2 parameter, function reducer, dan data awal (initialNotes)
+  // jikalau ingin menggunakan reducer dengan immer
+  const [notes, dispatch] = useImmerReducer(notesReducer, initialNotes);
 
-  // menyiapkan variabel yang dibutuhkan
-  // dispatch digunakan sebagai pengganti operasi, yang menghubungkan component ke function reducer
-  // const [notes, dispatch] = useReducer(notesReducer, initialNotes); // jikalau ingin menggunakan reducer pure
-  const [notes, dispatch] = useImmerReducer(notesReducer, initialNotes); // jikalau ingin menggunakan reducer dengan immer
-
+  // dispatch bisa langsung menggunakan context
   // membuat event handler yang digunakan untuk mengirimkan expression ke function reducer
-  function handleAddNote(text) {
-    dispatch({
-      // dispatch digunakan sebagai pengganti
-      type: "ADD_NOTE",
-      text: text,
-    });
-  }
+  // function handleAddNote(text) {
+  //   dispatch({
+  //     // dispatch digunakan sebagai pengganti
+  //     type: "ADD_NOTE",
+  //     text: text,
+  //   });
+  // }
 
-  function handleChangeNote(note) {
-    dispatch({
-      ...note, // bisa juga menggunakan spread syntax
-      type: "CHANGE_NOTE",
-    });
-  }
+  // function handleChangeNote(note) {
+  //   dispatch({
+  //     ...note, // bisa juga menggunakan spread syntax
+  //     type: "CHANGE_NOTE",
+  //   });
+  // }
 
-  function handleDeleteNote(note) {
-    dispatch({
-      type: "DELETE_NOTE",
-      id: note.id,
-    });
-  }
+  // function handleDeleteNote(note) {
+  //   dispatch({
+  //     type: "DELETE_NOTE",
+  //     id: note.id,
+  //   });
+  // }
 
   return (
     <div>
-      <h1>Note App</h1>
+      {/* imeplementasi context untuk notes */}
+      <NotesContext.Provider value={notes}>
+        {/* implementasi context untuk dispatch/fungsional */}
+        <NotesDispatchContext.Provider value={dispatch}>
+          <h1>Note App</h1>
 
-      {/* akan membuka menu / tampilan menambahkan note baru */}
-      <NoteForm onAddNote={handleAddNote}></NoteForm>
+          {/* setelah mendefinisikan context untuk notes dan dispatch, komponent dibawah nya- */}
+          {/* tidak perlu lagi mendefinisikan props, karena bisa langsung digunakan dengan useContext- */}
+          {/* pada masing masing component */}
 
-      {/* menampilkan list, dan aksi yang bisa dilakukan (edit/hapus) */}
-      <NoteList notes={notes} onChange={handleChangeNote} onDelete={handleDeleteNote}></NoteList>
+          {/* akan membuka menu / tampilan menambahkan note baru */}
+          <NoteForm></NoteForm>
+
+          {/* menampilkan list, dan aksi yang bisa dilakukan (edit/hapus) */}
+          <NoteList></NoteList>
+        </NotesDispatchContext.Provider>
+      </NotesContext.Provider>
     </div>
   );
 }
