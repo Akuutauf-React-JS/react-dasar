@@ -399,7 +399,7 @@ context
 - tapi mengirim informasi melalui banyak component, mungkin akan membuat kita terlalu sulit melakukan maintain props nya
 - atau, misal saja kita punya satu informasi yang digunakan oleh banyak component, maka mengirim ke semua component juga akan terlalu sulit
 - context membolehkan parent component membuat informasi dan bisa digunakan oleh component manapun dibawah nya (child component), tidak peduli seberapa dalam component di dalamnya
-- banyak juga yang bilang jika contect adalah global state
+- banyak juga yang bilang jika context adalah global state
 
 membuat context
 - untuk membuat context, kita bisa menggunakan function createContext()
@@ -446,3 +446,81 @@ ref hooks
 | 4. tidak direkomendasikan untuk membaca dan menulis curent    | 4. bisa dibaca kapanpun, tapi tiap render akan memiliki snapshot masing-masing
 | value ketika proses rendering. lebih cocok dibaca atau diubah | 
 | pada event handler                                            | 
+
+manipulasi DOM dengan ref
+- react secara otomatis akan mengupdate DOM ketika melakukan render ulang, jadi kita tidak perlu memanipulasi DOM secara manual lagi
+- tapi, kadang kita perlu mengakses DOM secara manual, contoh memindahkan fokus ke salah satu element, atau scroll ke element tertentu, dan lain lain
+- sayangnya, tidak ada cara melakukan hal ini menggunakan react, jadi kita perlu tangani hal ini secara manual
+- salah satu caranya kita menggunakan ref menuju ke DOM element
+- caranya, pada element nya, kita bisa tambahkan attribute Ref
+
+ref untuk component
+- ref hanya bisa digunakan di DOM element, kita tidak bisa menggunakan ref di Component
+- jika kita ingin menambahkan ref ke component, maka attribute current akan bernilai null
+
+mengakses component DOM element
+- karena component tidak bisa dijadikan sebagai ref, oleh karena itu, jika kita ingin menggunakan ref untuk component, kita bisa menggunakan props
+- kita bisa membuat props ref yang kita isi Ref
+- props ref bisa kita gunakan pada DOM element di dalam component tersebut
+
+effect hooks
+- hooks selanjutnya adalah effect hooks
+- beberapa component mungkin butuh untuk berkomunikasi dengan external system, misal berkomunikasi dengan non react component, berkomunikasi dengan server dan lain lain
+- effect hooks memungkinkan kita membuat kode yang dijalankan setelah proses render, sehingga kita bisa berkomunikasi dengan system diluar react
+- effect terjadi setelah proses render selesai
+- kita bisa menggunakan 'useEffect()' untuk membuat Effect
+- referensi : https://react.dev/reference/react/useEffect
+
+kenapa tidak cukup event handler ? (untuk menangani komunikasi diluar system react)
+- biasanya kita tahu bahwa component itu harus pure, dan tidak memiliki efek samping
+- untuk kode yang memiliki efek samping, biasanya kita gunakan event handler 
+- namun, kadang ada kebutuhan kita memang perlu membuat component yang memiliki efek samping ketika render
+- misal ketika component di render, kita ingin mengambil data dari server, sehingga bisa menyebabkan isi component berubah (efek samping) sesuai dengan response server
+- disinilah effect hooks diperlukan
+
+infinite loop
+- secara default, effect akan dieksekusi seteah proses render 
+- oleh karena itu, kita perlu berhati-hati, karena jika di dalam effect kita mengubah state, maka bisa terjadi infinite loop yang menyebabkan proses render berulang secara terus menerus tanpa henti
+
+effect clean up
+- pada beberapa kasus, mungkin kita butuh melakukan sesuatu setelah eksekusi effect selesai dilakukan
+- seperti misal di Try Catch, terdapat finally
+- di effect terdapat proses yang namanya clean up, clean up sendiri akan dieksekusi setelah proses effect selesai
+- caranya cukup mudah, kita tinggal return kan Closure Function di dalam effect
+- clean up akan dieksekusi sebelum effect selanjutnya di eksekusi, atau component di hilangkan
+
+effect dependencies
+- secara default, effect akan dieksekusi setiap selesai proses render
+- artinya jika proses render dilakukan berkali-kali, effect akan dieksekusi juga berkali-kali setelah proses render selesai
+- hal ini menjadikan kita harus melakukan pengecekan secara manual seperti materi sebelumnya, jika tidak ingin kode effect dijalankan berkali-kali
+- useEffect() memiliki parameter kedua yaitu Depencencies
+- kita bisa mengisi dependencies dengan array daru state, dimana artinya effect hanya akan di eksekusi jika state tersebut berubah, jika tidak berubah maka effect tidak akan dieksekusi 
+- hal ini mungkin lebih mudah dibandingkan manual melakukan if else
+
+empty dependencies
+- kadang-kadang, mungkin kita hanya ingin memanggil effect sekali saja setelah pertama kali component di render, setelah itu kita tidak mau memanggil effect lagi, bahkan jika terjadi render ulang
+- pada kasus seperti itu, kita bisa gunakan empty array sebagai dependencies, maka effect hanya akan dipanggil sekali saja setelah render pertama kali, selanjutnya tidak akan dipangil lagi
+
+async code di Effect
+- kadang, saat berhubungan dengan system external, misal memanggil API, biasanya kita akan membuat kode async await
+- sayangnya, effect tidak mendukung async function, oleh karena itu jika kita bisa menggunakan promise secara langsung, kita bisa langsung saja gunakan promise, tanpa menggunakan async await
+- namun, jika kita memang mau menggunakan async await, maka kita harus buat function yang nanti dipanggil di useEffect()
+- misalnya, kita akan coba ubah kode sebelumnya menjadi kode async await ketika mengambil data products
+
+jangan gunakan effect (terlalu banyak di react)
+- effect hook adalah cara di luar dari yang biasa dilakukan di react
+- effect memungkinkan kita keluar dari kebiasaan di react, dan memungkinkan component kita berinteraksi dengan external system seperti non react component, dan lain-lain
+- jika tidak ada interaksi dengan external system, maka sebaiknya jangan gunakan effect
+- meminimalisir penggunaan effect akan membuat kode kita mudah untuk dibaca, cepat dieksekusi dan minim error
+
+jangan gunakan effect untuk inisialisasi aplikasi
+- kadang beberapa proses dilakukan diawal sebelum halaman ditampilkan
+- pada kasus ini, gunakan saja kode javascript langsung diluar react
+- jangan gunakan effect untuk melakukan inisialisasi aplikasi
+- hal ini karena effect akan dieksekusi setelah render (setelah ditampilkan), dan akan di eksekusi ulang jika terjadi render ulang (bisa berkali-kali)
+
+jangan gunakan effect untuk mengubah data di server
+- jika terdapat logic di effect melakukan perubahan data di server, perlu hati-hati, karena bisa saja effect dieksekusi berkali-kali karena proses render ulang
+- oleh karena itu, tidak direkomendasikan untuk menggunakan effect untuk mengubah data di server
+- gunakan event handler jika kita ingin mengubah data di server, sehingga jelas kapan perubahan terjadi
+- menggunakan effect bisa menyebabkan perubahan data di server terjadi berkali-kali karena render ulang component
