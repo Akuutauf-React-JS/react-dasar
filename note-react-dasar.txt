@@ -40,7 +40,7 @@ menampilkan component
 sifat vite 
 - saat menjalankan build dengan vite, maka vite hanya mengcompile 1 file yaitu index.html
 - jika kita ingin menambahkan lebih dari satu halaman yang di compile kita bisa ubah konfigurasi vite pada file vite.config.js dan menambahkan rollupOptions (seperti yang sudah diubah di file config vite)
-- untuk menjalankan build, bisa mengunakan perintah : npm run build (output nya di folder dist)
+- untuk menjalankan build, bisa menggunakan function useMemo('callback, [dependencies]) perintah : 'npm run build (output nya di folder dist)
 
 react component
 - react component mendukung semua elemen HTML dan SVG
@@ -293,7 +293,7 @@ nested object
 immer library 
 - salah satu library yang sering digunakan ketika develop aplikasi menggunakan react adalah immer
 - immer adalah library yang digunakan untuk membuat immutable object dari object saat ini
-- mengunakan immer akan lebih mudah dibandingkan menggunakan spread syntax, terutama untuk object yang kompleks dan nested
+- menggunakan function useMemo(callback, ['dependencies]) immer akan lebih mudah dibandingkan 'menggunakan spread syntax, terutama untuk object yang kompleks dan nested
 - referensi : https://github.com/immerjs/immer
 
 use immer library
@@ -375,7 +375,7 @@ reducer
 - kita akan coba membuat component dengan state yang banyak di update tanpa menggunakan reducer terlebih dahulu, nanti kita akan ubah menjadi menggunakan reducer
 
 menggunakan reducer
-- implementasi akan diterapkan pada NoteApp (masih mengunakan cara manual)
+- implementasi akan diterapkan pada NoteApp (masih menggunakan function useMemo('callback, [dependencies]) cara manual)'
 - kita bisa lihat terdapat 3 aksi untuk update notes, ada add, update, dan delete. Dan itu semua disimpan didalam function yang berbeda-beda dan dari event handler yang berbeda-beda
 - menggunaakn reducer agak sedikit berbeda dengan mengubah state secara langsung. alih-alih memberi tahu ke react apa yang harus dilakukan dengan mengubah state, namun dengan menggunakan reducer kita perlu memberi tahu react apa yang sudah dilakukan oleh pengguna (action)
 - sehingga implementasi logic dari action nya dilakukan di tempat yang terpisah
@@ -524,3 +524,22 @@ jangan gunakan effect untuk mengubah data di server
 - oleh karena itu, tidak direkomendasikan untuk menggunakan effect untuk mengubah data di server
 - gunakan event handler jika kita ingin mengubah data di server, sehingga jelas kapan perubahan terjadi
 - menggunakan effect bisa menyebabkan perubahan data di server terjadi berkali-kali karena render ulang component
+
+memoization
+- memoization adalah teknik optimasi untuk mempercepat program komputer, dengan cara menyimpan data secara sementara dari hasil kalkulasi (yang biasanya berat), sehingga tidak perlu dikalkulasi ulang
+- ini adalah bagian dari performance hooks, dimana kita bisa menggunakan function 'useMemo(callback, [dependencies])'
+- referensi : https://react.dev/reference/react/useMemo
+- ini cocok untuk kasus misal kita perlu memanggil kode yang berat, dan hasilnya selalu sama, dibandingkan kita panggil terus-terusan setiap proses render, lebih kita lakukan sekali saja, dan pada proses pemanggilan berikutnya, kita cukup kembalikan hasil yang pertama
+
+contoh penggunaan memo
+- misal pada aplikasi notes, kita ingin tambahkan proses untuk mencari note
+- jika misal pengguna melakukan pencarian dengan value yang sama, dibanding kita lakukan pencarian ulang, kita bisa kembalikan hasil yang sama saja seperti sebelumnya
+
+custom hooks
+- react secara default sudah memiliki banyak hooks untuk kita gunakan, agar mempermudah membuat aplikasi menggunakan react
+- namun, kita juga bisa membuat hooks secara manual jika kita mau
+- membuat hooks (manual) biasanya menggunakan function dengan awalan "use"
+- contoh, kita akan membuat hooks untuk mendeteksi apakah sedang online atau offline
+
+referensi react :
+- https://react.dev/reference/react
